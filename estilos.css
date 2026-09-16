@@ -1,0 +1,457 @@
+/* ==========================================================================
+   FoodSync — hoja de estilos de la página de presentación.
+
+   NO reutiliza css/estilos.css a propósito: aquel archivo son 1 350 líneas de
+   interfaz de aplicación móvil —barra inferior, hojas deslizantes, rejillas de
+   KPI— que no sirven para una página que se lee de arriba abajo. Lo que sí se
+   comparte es la paleta, y esa es la única regla que hay que respetar al tocar
+   este archivo.
+
+   LOS CINCO COLORES son los mismos de la app. Si cambian allí, cambian aquí.
+   Ojo con dos de ellos: --tinta-suave y --oro-hondo llevan los valores
+   CORREGIDOS por contraste. Copiar los antiguos (#8B908C y #8A6D10) devuelve
+   los 3,25:1 y 4,40:1 que se arreglaron en la fase 10.
+
+   Ningún recurso externo: ni fuentes de Google, ni CDN, ni analítica. La app
+   arranca sin red y su página también.
+   ========================================================================== */
+
+:root {
+  --verde:        #0B6E4F;
+  --verde-medio:  #2E8B57;
+  --oro:          #D4AF37;
+  --crema:        #F7F3E3;
+  --tinta:        #1E1E1E;
+  --blanco:       #FFFFFF;
+
+  --verde-hondo:  #074434;
+  --verde-tinte:  #E6F0EA;
+  --verde-tinte2: #CFE2D7;
+  --oro-tinte:    #FBF2D9;
+  --oro-tinte2:   #F1E2B4;
+  --oro-hondo:    #806410;   /* corregido: 5,02:1 sobre --oro-tinte */
+  --crema-honda:  #EDE7D3;
+  --crema-borde:  #E2DCC6;
+  --tinta-media:  #5B605C;
+  --tinta-suave:  #6A6F6B;   /* corregido: 5,12:1 sobre blanco */
+
+  --ancho:        1080px;
+  --radio:        18px;
+  --radio-chico:  11px;
+  --sombra:       0 1px 2px rgba(30, 30, 30, .04), 0 6px 24px rgba(11, 110, 79, .07);
+  --curva:        cubic-bezier(.4, 0, .2, 1);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  background: var(--crema);
+  color: var(--tinta);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { margin: 0; font-weight: 680; letter-spacing: -.02em; line-height: 1.2; }
+h1 { font-size: clamp(2rem, 5.5vw, 3.3rem); }
+h2 { font-size: clamp(1.5rem, 3.6vw, 2.2rem); }
+h3 { font-size: 1.12rem; letter-spacing: -.01em; }
+p  { margin: 0; }
+a  { color: inherit; }
+img { max-width: 100%; height: auto; }
+
+svg.i {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  width: 24px; height: 24px;
+  flex-shrink: 0;
+}
+
+.envoltura { width: 100%; max-width: var(--ancho); margin: 0 auto; padding: 0 20px; }
+
+/* Ningún objetivo pulsable por debajo de 44 px: la misma regla que la app. */
+.boton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  min-height: 52px;
+  padding: 13px 26px;
+  border-radius: var(--radio-chico);
+  border: 1.5px solid transparent;
+  font: inherit; font-size: 1rem; font-weight: 650;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .14s var(--curva), background-color .24s var(--curva),
+              box-shadow .24s var(--curva);
+}
+.boton:active { transform: scale(.97); }
+.boton svg { width: 20px; height: 20px; }
+
+.boton.primario { background: var(--verde); color: var(--blanco); box-shadow: 0 4px 16px rgba(11, 110, 79, .28); }
+.boton.primario:hover { background: var(--verde-hondo); }
+.boton.claro { background: var(--blanco); color: var(--verde); border-color: var(--blanco); }
+.boton.claro:hover { background: var(--crema); }
+.boton.borde { background: transparent; color: var(--verde); border-color: var(--verde); }
+.boton.borde:hover { background: var(--verde-tinte); }
+
+.boton:focus-visible, a:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--verde);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   Cabecera
+   ========================================================================== */
+
+.cabecera {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(247, 243, 227, .93);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--crema-borde);
+}
+.cabecera .envoltura {
+  display: flex; align-items: center; gap: 20px;
+  min-height: 72px;
+}
+.cabecera a:first-child { display: flex; align-items: center; min-height: 44px; }
+.cabecera img { width: 158px; }
+.menu { display: flex; gap: 22px; margin-left: auto; align-items: center; }
+.menu a {
+  text-decoration: none; font-size: .95rem; font-weight: 600;
+  color: var(--tinta-media);
+  padding: 8px 2px;
+  border-bottom: 2px solid transparent;
+  transition: color .2s var(--curva), border-color .2s var(--curva);
+}
+.menu a:hover { color: var(--verde); border-bottom-color: var(--oro); }
+.menu .boton { margin-left: 4px; }
+
+/* ==========================================================================
+   Secciones
+   ========================================================================== */
+
+section { padding: clamp(56px, 8vw, 104px) 0; }
+section.clara  { background: var(--blanco); }
+section.verde  { background: var(--verde); color: var(--crema); }
+section.verde h2 { color: var(--blanco); }
+
+.titular { max-width: 640px; margin-bottom: 40px; }
+.titular .antetitulo {
+  display: inline-block;
+  font-size: .8rem; font-weight: 750; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--oro-hondo);
+  background: var(--oro-tinte);
+  padding: 5px 13px; border-radius: 999px;
+  margin-bottom: 14px;
+}
+section.verde .titular .antetitulo { color: var(--tinta); background: var(--oro); }
+.titular p { margin-top: 14px; font-size: 1.1rem; color: var(--tinta-media); }
+section.verde .titular p { color: var(--verde-tinte); }
+
+/* ---- Portada ---- */
+
+.portada {
+  background: linear-gradient(168deg, var(--verde-hondo) 0%, var(--verde) 62%, var(--verde-medio) 140%);
+  color: var(--crema);
+  padding: clamp(52px, 8vw, 96px) 0 clamp(60px, 9vw, 110px);
+  position: relative; overflow: hidden;
+}
+.portada-rejilla {
+  display: grid; grid-template-columns: 1.25fr .75fr; gap: 48px; align-items: center;
+}
+.portada h1 { color: var(--blanco); }
+.portada .entrada { font-size: clamp(1.06rem, 2.1vw, 1.26rem); color: var(--verde-tinte); margin-top: 20px; max-width: 34em; }
+.portada .acciones { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 32px; }
+.portada .pie-portada {
+  margin-top: 20px; font-size: .92rem; color: var(--verde-tinte2);
+  display: flex; align-items: center; gap: 8px;
+}
+.portada .pie-portada svg { width: 17px; height: 17px; }
+
+.sellos { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+.sello {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(247, 243, 227, .13);
+  border: 1px solid rgba(247, 243, 227, .24);
+  color: var(--crema);
+  border-radius: 999px; padding: 7px 15px;
+  font-size: .87rem; font-weight: 600;
+}
+.sello svg { width: 16px; height: 16px; color: var(--oro-tinte2); }   /* 4,85:1 sobre el verde */
+
+.ilustracion { display: block; stroke-linecap: round; stroke-linejoin: round; width: 100%; height: auto; }
+.ilustracion path, .ilustracion circle { fill: none; }
+.ilustracion .il-trazo  { stroke: var(--oro); stroke-width: 3; }
+.ilustracion .il-acento { stroke: var(--crema); stroke-width: 2.6; }
+.ilustracion .il-fondo  { fill: rgba(247, 243, 227, .09); }
+
+/* ---- Rejillas de tarjetas ---- */
+
+.rejilla { display: grid; gap: 20px; }
+.rejilla.tres { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
+.rejilla.dos  { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+
+.tarjeta {
+  background: var(--blanco);
+  border: 1px solid var(--crema-borde);
+  border-radius: var(--radio);
+  padding: 28px;
+  box-shadow: var(--sombra);
+}
+section.clara .tarjeta { background: var(--crema); }
+.tarjeta .marca {
+  width: 50px; height: 50px;
+  border-radius: 14px;
+  background: var(--verde-tinte); color: var(--verde);
+  display: grid; place-items: center;
+  margin-bottom: 17px;
+}
+.tarjeta .marca.oro { background: var(--oro-tinte); color: var(--oro-hondo); }
+.tarjeta p { margin-top: 10px; color: var(--tinta-media); font-size: .99rem; }
+.tarjeta .apunte {
+  display: block; margin-top: 14px; padding-top: 14px;
+  border-top: 1px solid var(--crema-borde);
+  font-size: .9rem; color: var(--tinta-suave);
+}
+
+/* ---- Descarga ---- */
+
+.descarga { display: grid; gap: 22px; max-width: 760px; }
+
+.descarga-ficha {
+  display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
+  background: var(--blanco);
+  border: 1.5px solid var(--verde);
+  border-radius: var(--radio);
+  padding: 30px;
+  box-shadow: 0 8px 30px rgba(11, 110, 79, .12);
+}
+.descarga-ficha img {
+  width: 96px; height: 96px; flex-shrink: 0;
+  border-radius: 22px;
+}
+.descarga-ficha > div { flex: 1; min-width: 220px; }
+.descarga-datos {
+  color: var(--tinta-media); font-size: .95rem;
+  margin-top: 5px; margin-bottom: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Los pasos van numerados porque SON una secuencia: descargar, permitir,
+   instalar. El orden es la informacion. */
+.pasos {
+  list-style: none; counter-reset: paso;
+  margin: 0; padding: 0; display: grid; gap: 14px;
+}
+.pasos li {
+  counter-increment: paso;
+  display: grid; grid-template-columns: 34px 1fr; gap: 15px;
+  align-items: start;
+  color: var(--tinta-media); font-size: .99rem;
+}
+.pasos li::before {
+  content: counter(paso);
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--verde-tinte); color: var(--verde);
+  display: grid; place-items: center;
+  font-weight: 750; font-size: .95rem;
+}
+.pasos strong { color: var(--tinta); }
+
+.aviso-descarga {
+  display: flex; gap: 15px; align-items: flex-start;
+  background: var(--verde-tinte);
+  border: 1px solid var(--verde-tinte2);
+  border-radius: var(--radio-chico);
+  padding: 20px 22px;
+  color: var(--verde);
+}
+.aviso-descarga svg { flex-shrink: 0; margin-top: 2px; }
+.aviso-descarga strong { display: block; margin-bottom: 3px; }
+
+/* ---- Cifras ---- */
+
+.cifras { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; }
+.cifra {
+  background: rgba(247, 243, 227, .09);
+  border: 1px solid rgba(247, 243, 227, .2);
+  border-radius: var(--radio);
+  padding: 26px 24px;
+}
+.cifra .valor {
+  display: block;
+  font-size: clamp(1.9rem, 4vw, 2.5rem); font-weight: 720;
+  /* Dorado claro y no --oro: el dorado sólido sobre este verde da 2,97:1 y el
+     mínimo para texto grande es 3:1. Este da 4,85:1 y es el mismo dorado
+     aclarado, así que la paleta no cambia. */
+  color: var(--oro-tinte2); letter-spacing: -.03em; line-height: 1.1;
+}
+.cifra .que { display: block; margin-top: 8px; font-weight: 650; color: var(--blanco); }
+.cifra .como { display: block; margin-top: 5px; font-size: .88rem; color: var(--verde-tinte2); }
+
+.fuentes {
+  margin-top: 36px; padding-top: 26px;
+  border-top: 1px solid rgba(247, 243, 227, .2);
+  font-size: .92rem; color: var(--verde-tinte2);
+}
+.fuentes strong { color: var(--crema); }
+
+/* ---- Planes ---- */
+
+.planes { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 22px; align-items: start; }
+.plan {
+  background: var(--blanco);
+  border: 1.5px solid var(--crema-borde);
+  border-radius: var(--radio);
+  padding: 32px;
+  position: relative;
+}
+.plan.destacado { border-color: var(--verde); box-shadow: 0 8px 30px rgba(11, 110, 79, .13); }
+.plan .lazo {
+  position: absolute; top: -13px; left: 32px;
+  background: var(--oro); color: var(--tinta);
+  font-size: .78rem; font-weight: 750; letter-spacing: .05em; text-transform: uppercase;
+  padding: 5px 13px; border-radius: 999px;
+}
+.plan .para { color: var(--tinta-media); font-size: .95rem; margin-top: 6px; }
+.plan .precio { margin: 22px 0 4px; display: flex; align-items: baseline; gap: 7px; }
+.plan .precio .monto { font-size: 2.6rem; font-weight: 720; letter-spacing: -.03em; }
+.plan .precio .unidad { color: var(--tinta-media); font-weight: 600; }
+.plan .anual { font-size: .92rem; color: var(--tinta-suave); }
+.plan .anual strong { color: var(--oro-hondo); }
+.plan ul { list-style: none; margin: 24px 0 26px; padding: 0; display: grid; gap: 11px; }
+.plan li { display: flex; gap: 10px; align-items: flex-start; font-size: .98rem; }
+.plan li svg { width: 19px; height: 19px; color: var(--verde); margin-top: 3px; }
+.plan .boton { width: 100%; }
+
+.nota-planes {
+  margin-top: 26px; text-align: center;
+  font-size: .95rem; color: var(--tinta-media);
+}
+
+/* ---- Qué no hace ---- */
+
+.limites { display: grid; gap: 16px; }
+.limite {
+  display: flex; gap: 17px; align-items: flex-start;
+  background: var(--blanco);
+  border: 1px solid var(--crema-borde);
+  border-left: 4px solid var(--tinta);
+  border-radius: var(--radio-chico);
+  padding: 22px 24px;
+}
+.limite svg { color: var(--tinta); margin-top: 2px; }
+.limite p { margin-top: 6px; color: var(--tinta-media); font-size: .98rem; }
+
+/* ---- Preguntas ---- */
+
+.preguntas { display: grid; gap: 12px; max-width: 800px; }
+details {
+  background: var(--blanco);
+  border: 1px solid var(--crema-borde);
+  border-radius: var(--radio-chico);
+  overflow: hidden;
+}
+summary {
+  cursor: pointer; list-style: none;
+  padding: 19px 22px;
+  font-weight: 650;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  min-height: 44px;
+}
+summary::-webkit-details-marker { display: none; }
+summary svg { width: 19px; height: 19px; color: var(--tinta-suave); transition: transform .24s var(--curva); flex-shrink: 0; }
+details[open] summary svg { transform: rotate(180deg); }
+details .respuesta { padding: 0 22px 21px; color: var(--tinta-media); }
+
+/* ---- Equipo y contacto ---- */
+
+.contacto { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+.via {
+  display: flex; gap: 16px; align-items: center;
+  background: var(--blanco);
+  border: 1px solid var(--crema-borde);
+  border-radius: var(--radio);
+  padding: 24px;
+  text-decoration: none;
+  transition: transform .18s var(--curva), box-shadow .24s var(--curva), border-color .24s var(--curva);
+}
+.via:hover { transform: translateY(-2px); box-shadow: var(--sombra); border-color: var(--verde-tinte2); }
+.via .marca {
+  width: 52px; height: 52px; border-radius: 15px;
+  background: var(--verde); color: var(--blanco);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.via .marca.oro { background: var(--oro); color: var(--tinta); }
+.via .que { display: block; font-weight: 680; }
+.via .dato { display: block; color: var(--tinta-media); font-size: .95rem; margin-top: 2px; }
+
+/* ---- Pie ---- */
+
+.pie {
+  background: var(--tinta); color: var(--crema);
+  padding: 52px 0 34px;
+  font-size: .93rem;
+}
+.pie-rejilla { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 36px; }
+.pie h3 { font-size: .82rem; text-transform: uppercase; letter-spacing: .09em; color: var(--oro); margin-bottom: 13px; }
+.pie ul { list-style: none; margin: 0; padding: 0; display: grid; }
+/* Los enlaces del pie llevan relleno en vez de separación entre elementos: así
+   el objetivo táctil llega a 44 px sin abrir la lista. Aquí están WhatsApp y el
+   teléfono, que no son enlaces de adorno. */
+.pie li a, .pie li .marcador { display: inline-block; padding: 11px 0; }
+.pie a { color: var(--crema); text-decoration: none; }
+.pie a:hover { color: var(--oro); text-decoration: underline; }
+.pie .descripcion { color: #BDBBB2; max-width: 30em; margin-top: 12px; }
+.pie .marcador { color: #BDBBB2; }
+.pie-fin {
+  margin-top: 38px; padding-top: 22px;
+  border-top: 1px solid rgba(247, 243, 227, .16);
+  display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between;
+  color: #BDBBB2;
+}
+
+/* ---- Capturas ---- */
+
+.capturas { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 22px; margin-top: 44px; }
+.captura { text-align: center; }
+.captura img {
+  width: 100%; border-radius: 22px;
+  border: 1px solid var(--crema-borde);
+  box-shadow: 0 10px 34px rgba(30, 30, 30, .14);
+  background: var(--blanco);
+}
+.captura figcaption { margin-top: 12px; font-size: .9rem; color: var(--tinta-media); }
+section.verde .captura figcaption { color: var(--verde-tinte2); }
+section.verde .captura img { border-color: rgba(247, 243, 227, .2); }
+
+/* ==========================================================================
+   Pantallas estrechas
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .portada-rejilla { grid-template-columns: 1fr; gap: 30px; }
+  .portada .dibujo { max-width: 240px; margin: 0 auto; }
+  .pie-rejilla { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 620px) {
+  body { font-size: 16px; }
+  .envoltura { padding: 0 16px; }          /* el gutter de 16 px del móvil */
+  .menu a:not(.boton) { display: none; }   /* solo queda el botón de WhatsApp */
+  .cabecera img { width: 132px; }
+  .portada .acciones .boton { width: 100%; }
+  .pie-rejilla { grid-template-columns: 1fr; gap: 28px; }
+  .tarjeta, .plan, .limite, .via { padding: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

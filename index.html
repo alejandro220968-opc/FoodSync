@@ -1,0 +1,707 @@
+<!doctype html>
+<!--
+  FoodSync — página de presentación.
+
+  Cuelga de /sitio/ y NO forma parte de la aplicación: el service worker la deja
+  pasar a propósito (mira `esAjenoALaApp` en sw.js) para que no entre en la caché
+  de la app ni pise su envase. No la añadas a ARCHIVOS en sw.js.
+
+  ESTA CARPETA ES AUTOSUFICIENTE, y por eso los iconos están repetidos en
+  sitio/iconos/. Nada de aquí sale con `../`: la carpeta se sube tal cual a
+  GitHub Pages (o a donde sea) y funciona sola, sin arrastrar el resto del
+  proyecto. Las rutas son todas relativas, así que da igual si acaba en la raíz
+  del dominio o en un subdirectorio. Si cambias el logotipo en iconos/, cópialo
+  también aquí.
+
+  OJO CON LOS PRECIOS. La regla 15 del proyecto dice que viven SOLO en la
+  constante PLANES de js/membresia.js. Aquí están duplicados a mano porque
+  cargar ese módulo arrastraría también dinero.js y datos.js, que es mucho peso
+  para una página que no ejecuta lógica. Si cambias un precio allí, cámbialo
+  también aquí: busca "S/ 9.90", "S/ 105.99", "S/ 55.00" y "S/ 600.00".
+
+  Lo mismo con el teléfono: el original está en js/vistas/ajustes.js.
+-->
+<html lang="es-PE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FoodSync · Control de inventario y finanzas para restaurantes</title>
+  <meta name="description" content="Controla el inventario, vigila los vencimientos y sabe qué plato deja dinero. Funciona sin internet y los datos se quedan en tu celular.">
+  <meta name="theme-color" content="#0B6E4F">
+
+  <meta property="og:title" content="FoodSync · Control de inventario y finanzas para restaurantes">
+  <meta property="og:description" content="Funciona sin internet y los datos se quedan en tu celular. 14 días de prueba.">
+  <meta property="og:image" content="iconos/icono-512.png">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_PE">
+
+  <link rel="icon" href="iconos/icono-192.png">
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<header class="cabecera">
+  <div class="envoltura">
+    <a href="#portada" aria-label="FoodSync, inicio">
+      <img src="iconos/logotipo.png" alt="FoodSync" width="720" height="163">
+    </a>
+    <nav class="menu">
+      <a href="#funciones">Qué hace</a>
+      <a href="#descargar">Descargar</a>
+      <a href="#planes">Planes</a>
+      <a href="#contacto">Contacto</a>
+      <a class="boton primario" href="https://wa.me/51961414086?text=Hola%2C%20vi%20la%20p%C3%A1gina%20de%20FoodSync%20y%20quiero%20saber%20m%C3%A1s."
+         target="_blank" rel="noopener">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.7-5A8.4 8.4 0 013 11.6 8.5 8.5 0 0111.6 3a8.4 8.4 0 018.4 8.5 8.5 8.5 0 01-8.5 8.5 8.4 8.4 0 01-4.3-1.2zM9 8.5c0 3 2.5 5.5 5.5 5.5M9 8.5h1.2l.9 2-1 1M14.5 14v-1.2l2-.9 1 1"/></svg>
+        Escríbenos
+      </a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============================ 1. Portada ============================ -->
+  <section class="portada" id="portada">
+    <div class="envoltura portada-rejilla">
+      <div>
+        <h1>Deja de perder plata en el almacén</h1>
+        <p class="entrada">
+          FoodSync controla el inventario de tu restaurante, vigila los
+          vencimientos y te dice qué plato deja dinero de verdad.
+          <strong>Funciona sin internet</strong> y todo se guarda dentro de tu
+          propio celular.
+        </p>
+
+        <div class="acciones">
+          <a class="boton claro" href="https://wa.me/51961414086?text=Hola%2C%20quiero%20probar%20FoodSync%20en%20mi%20restaurante."
+             target="_blank" rel="noopener">
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.7-5A8.4 8.4 0 013 11.6 8.5 8.5 0 0111.6 3a8.4 8.4 0 018.4 8.5 8.5 8.5 0 01-8.5 8.5 8.4 8.4 0 01-4.3-1.2zM9 8.5c0 3 2.5 5.5 5.5 5.5M9 8.5h1.2l.9 2-1 1M14.5 14v-1.2l2-.9 1 1"/></svg>
+            Pídela por WhatsApp
+          </a>
+          <a class="boton" href="#descargar" style="color:var(--crema); border-color:rgba(247,243,227,.4)">
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v13m0 0l-4.5-4.5M12 16l4.5-4.5M4 21h16"/></svg>
+            Descargar para Android
+          </a>
+        </div>
+
+        <p class="pie-portada">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+          14 días de prueba · sin tarjeta · sin compromiso
+        </p>
+
+        <div class="sellos">
+          <span class="sello">
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h2v-4H3zM9 20h2V10H9zM15 20h2V6h-2zM21 20h2V3h-2z"/></svg>
+            Funciona en modo avión
+          </span>
+          <span class="sello">
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V7a4 4 0 018 0v4"/></svg>
+            Tus datos no salen del celular
+          </span>
+          <span class="sello">
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h4"/></svg>
+            Registro de Ventas para la SUNAT
+          </span>
+        </div>
+      </div>
+
+      <div class="dibujo">
+        <svg class="ilustracion" viewBox="0 0 160 120" role="img" aria-label="Un plato entre cubiertos">
+          <circle class="il-fondo il-trazo" cx="80" cy="66" r="30"/>
+          <circle class="il-acento" cx="80" cy="66" r="19"/>
+          <path class="il-trazo" d="M30 46v40M30 46c0 8 3 11 6 11s6-3 6-11M36 57v29"/>
+          <path class="il-trazo" d="M124 46c6 0 8 8 8 14s-4 8-8 8v18"/>
+          <path class="il-acento" d="M68 26c0-6 6-6 6-12M80 22c0-6 6-6 6-12M92 26c0-6 6-6 6-12"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= 2. Para quién es ========================= -->
+  <section id="para-quien">
+    <div class="envoltura">
+      <div class="titular">
+        <span class="antetitulo">Para quién es</span>
+        <h2>Si llevas el almacén en un cuaderno, esto es para ti</h2>
+        <p>
+          No hace falta saber de computadoras ni tener a nadie en la oficina.
+          Se usa de pie en la cocina, con una mano y con prisa, que es como de
+          verdad se lleva un restaurante.
+        </p>
+      </div>
+
+      <div class="rejilla tres">
+        <article class="tarjeta">
+          <span class="marca oro"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 7v5l3.5 2"/></svg></span>
+          <h3>Se te vence la mercadería</h3>
+          <p>
+            Compras pollo el lunes y otra vez el jueves, y nadie sabe cuál hay
+            que gastar primero. Lo que se malogra ya no se recupera.
+          </p>
+        </article>
+
+        <article class="tarjeta">
+          <span class="marca oro"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v20M16.5 6.5C15.5 5.5 14 5 12 5c-2.8 0-4.5 1.2-4.5 3.2 0 4.6 9.5 2.4 9.5 7.3 0 2.1-1.9 3.5-5 3.5-2.2 0-3.9-.6-5-1.8"/></svg></span>
+          <h3>No sabes qué plato te deja</h3>
+          <p>
+            El que más se vende no siempre es el que más gana. Sin saber cuánto
+            cuesta cada ración, el precio de la carta es una corazonada.
+          </p>
+        </article>
+
+        <article class="tarjeta">
+          <span class="marca oro"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 9v4m0 4h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L14.7 3.9a2 2 0 00-3.4 0z"/></svg></span>
+          <h3>El IGV lo calculas a ojo</h3>
+          <p>
+            Y cada mes toca rehacer los números a mano para el contador, con el
+            riesgo de que no cuadren con lo que dice la SUNAT.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== 3. Qué hace =========================== -->
+  <section class="clara" id="funciones">
+    <div class="envoltura">
+      <div class="titular">
+        <span class="antetitulo">Qué hace</span>
+        <h2>Seis cosas, y todas se hablan entre ellas</h2>
+        <p>
+          Vender un lomo saltado descuenta su carne, su papa y su aceite. Esa es
+          la idea: que la cocina y el almacén digan lo mismo.
+        </p>
+      </div>
+
+      <div class="rejilla tres">
+        <article class="tarjeta">
+          <span class="marca"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7l-8-4-8 4v10l8 4 8-4V7zM4 7l8 4 8-4M12 21V11"/></svg></span>
+          <h3>Inventario por lotes</h3>
+          <p>
+            Cada compra abre su propio lote con su fecha. La app gasta siempre
+            el que vence antes, que es lo que manda la norma sanitaria.
+          </p>
+          <span class="apunte">Y si sacas más de lo que hay, te lo dice en vez de callarlo.</span>
+        </article>
+
+        <article class="tarjeta">
+          <span class="marca"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14.8V5a2 2 0 114 0v9.8a4.5 4.5 0 11-4 0zM12 18h.01"/></svg></span>
+          <h3>Cómo guardar cada alimento</h3>
+          <p>
+            A qué temperatura va, con qué no juntarlo y en qué señales fijarse
+            para saber si se está echando a perder.
+          </p>
+          <span class="apunte">175 alimentos, cada uno con la fuente de donde sale el dato.</span>
+        </article>
+
+        <article class="tarjeta">
+          <span class="marca"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 17a5 5 0 100-10 5 5 0 000 10z"/></svg></span>
+          <h3>La carta y lo que cuesta</h3>
+          <p>
+            Anota de qué está hecho cada plato y sabrás cuánto te cuesta, cuánto
+            te deja y qué margen tiene. Ordenados por lo que de verdad aportan.
+          </p>
+          <span class="apunte">Vender descuenta del almacén, ingrediente por ingrediente.</span>
+        </article>
+
+        <article class="tarjeta">
+          <span class="marca"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18M6 16V9M11 16V4M16 16v-5M21 16v-9"/></svg></span>
+          <h3>A dónde se va el dinero</h3>
+          <p>
+            Ingresos y egresos, ticket promedio, mejor día y los últimos seis
+            meses. Separando lo que entra por salón de lo que entra por delivery.
+          </p>
+          <span class="apunte">Y cuánto de lo que pasó por caja no es tuyo, sino del personal.</span>
+        </article>
+
+        <article class="tarjeta">
+          <span class="marca"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zM14 3v5h5M9 13h6M9 17h4"/></svg></span>
+          <h3>Registro de Ventas y Compras</h3>
+          <p>
+            El archivo del formato 14.1 listo para el contador o para el SIRE, y
+            los números del Formulario 621 con lo que de verdad hay que pagar.
+          </p>
+          <span class="apunte">Te dice cuánto pierdes por comprar sin factura. Suele ser un 18 %.</span>
+        </article>
+
+        <article class="tarjeta">
+          <span class="marca"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h12v20l-2.5-1.6L13 22l-2.5-1.6L8 22l-2-1.6zM9 8h6M9 12h6"/></svg></span>
+          <h3>Cotizaciones</h3>
+          <p>
+            Cuando te preguntan cuánto cuesta atender un matrimonio de 120
+            personas, armas el precio y se lo mandas.
+          </p>
+          <span class="apunte">No toca el almacén hasta que el cliente acepta.</span>
+        </article>
+      </div>
+
+      <!-- ====================== CAPTURAS DE PANTALLA ======================
+           Falta el material. Para activarlo:
+
+           1. Abre la app y entra en Ajustes → Cargar datos de ejemplo. Es el
+              restaurante de demostración, con semilla fija, y se ve igual
+              siempre. NO uses tus datos reales en una página pública.
+           2. Con el celular en vertical, captura estas tres pantallas:
+                inicio.png     → Inicio, con las tarjetas del panel
+                inventario.png → Inventario, la lista con los semáforos
+                carta.png      → Carta, con el costo y el margen de cada plato
+           3. Déjalas en sitio/capturas/ con esos nombres exactos.
+           4. Borra estas dos líneas de comentario y ya está.
+
+           El estilo .capturas ya está escrito en estilos.css.
+      -->
+      <!--
+      <div class="capturas">
+        <figure class="captura">
+          <img src="capturas/inicio.png" alt="Pantalla de inicio de FoodSync con el resumen del negocio" loading="lazy">
+          <figcaption>Todo el negocio en una pantalla</figcaption>
+        </figure>
+        <figure class="captura">
+          <img src="capturas/inventario.png" alt="Lista de inventario con el semáforo de vencimientos" loading="lazy">
+          <figcaption>El semáforo avisa antes de que se venza</figcaption>
+        </figure>
+        <figure class="captura">
+          <img src="capturas/carta.png" alt="La carta con el costo y el margen de cada plato" loading="lazy">
+          <figcaption>Cuánto cuesta y cuánto deja cada plato</figcaption>
+        </figure>
+      </div>
+      -->
+    </div>
+  </section>
+
+  <!-- ======================== 4. Sin internet ========================== -->
+  <section id="sin-internet">
+    <div class="envoltura">
+      <div class="titular">
+        <span class="antetitulo">La diferencia</span>
+        <h2>Funciona sin internet, y eso no es un detalle</h2>
+        <p>
+          En una cocina la señal va y viene. FoodSync no depende de ella: se
+          instala en el celular como cualquier otra app y a partir de ahí
+          funciona en modo avión.
+        </p>
+      </div>
+
+      <div class="rejilla dos">
+        <article class="tarjeta">
+          <span class="marca"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h2v-4H3zM9 20h2V10H9zM15 20h2V6h-2zM21 20h2V3h-2z"/></svg></span>
+          <h3>Sin señal y sin esperas</h3>
+          <p>
+            Registrar una venta no espera a que cargue nada. Todo el cálculo
+            ocurre dentro del teléfono, así que responde al instante aunque
+            estés en el sótano del local.
+          </p>
+        </article>
+
+        <article class="tarjeta">
+          <span class="marca"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 11h14v10H5zM8 11V7a4 4 0 018 0v4"/></svg></span>
+          <h3>Tus números son tuyos</h3>
+          <p>
+            No hay servidor ni nube: las ventas de tu restaurante no viajan a
+            ningún sitio. No podemos verlas, ni venderlas, ni compartirlas,
+            porque sencillamente no las recibimos.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= 5. Descargar ============================
+       El archivo lo deja construir_apk.py en sitio/descargas/. Esa carpeta
+       esta en .gitignore, asi que al subir el sitio hay que subirla a mano.
+  -->
+  <section class="clara" id="descargar">
+    <div class="envoltura">
+      <div class="titular">
+        <span class="antetitulo">Descarga</span>
+        <h2>Instálala en tu celular ahora</h2>
+        <p>
+          Un solo archivo. No necesitas cuenta, ni tarjeta, ni Play Store: la
+          app entera va dentro y funciona desde el primer arranque.
+        </p>
+      </div>
+
+      <div class="descarga">
+        <div class="descarga-ficha">
+          <img src="iconos/icono-512.png" alt="" width="512" height="512">
+          <div>
+            <h3>FoodSync para Android</h3>
+            <p class="descarga-datos">
+              Versión 1.0 · 584 KB · Android 7 o superior
+            </p>
+            <a class="boton primario" href="descargas/FoodSync-1.0.apk" download>
+              <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v13m0 0l-4.5-4.5M12 16l4.5-4.5M4 21h16"/></svg>
+              Descargar el APK
+            </a>
+          </div>
+        </div>
+
+        <!-- El contenido de cada paso va envuelto en un <div> a proposito: la
+             lista es una rejilla, y sin el envoltorio cada trozo de texto suelto
+             cuenta como celda propia y acaba partiendose una palabra por linea. -->
+        <ol class="pasos">
+          <li>
+            <div><strong>Descarga el archivo</strong> en el celular, no en la
+            computadora.</div>
+          </li>
+          <li>
+            <div><strong>Ábrelo.</strong> Android te avisará de que viene de un
+            «origen desconocido»: es lo normal en cualquier app que no venga de
+            la Play Store. Dale permiso al navegador para instalar y continúa.</div>
+          </li>
+          <li>
+            <div><strong>Listo.</strong> Queda con su icono en la pantalla de
+            inicio y ya funciona en modo avión.</div>
+          </li>
+        </ol>
+
+        <div class="aviso-descarga">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM12 11v5M12 7.6h.01"/></svg>
+          <div>
+            <strong>Si ya la tenías instalada</strong>
+            Se actualiza encima sin borrar nada: va firmada con la misma clave,
+            así que el celular la reconoce como la misma app y tu inventario,
+            tus ventas y tus comprobantes siguen ahí.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== 6. Datos importantes ======================= -->
+  <section class="verde" id="datos">
+    <div class="envoltura">
+      <div class="titular">
+        <span class="antetitulo">Datos importantes</span>
+        <h2>Números que se pueden comprobar</h2>
+        <p>
+          Ninguno de estos es una promesa comercial: todos salen de medir la app
+          contra datos reales.
+        </p>
+      </div>
+
+      <div class="cifras">
+        <div class="cifra">
+          <span class="valor">175</span>
+          <span class="que">alimentos con fuente citada</span>
+          <span class="como">Ni una cifra estimada a ojo. Cada ficha dice de qué institución sale su dato.</span>
+        </div>
+        <div class="cifra">
+          <span class="valor">0</span>
+          <span class="que">céntimos de desvío</span>
+          <span class="como">En 1 355 comprobantes de un mes simulado. Un céntimo de diferencia es una observación de la SUNAT.</span>
+        </div>
+        <div class="cifra">
+          <span class="valor">2,4 ms</span>
+          <span class="que">en registrar una venta</span>
+          <span class="como">Medido con 2 000 ventas y 9 339 líneas de detalle ya cargadas.</span>
+        </div>
+        <div class="cifra">
+          <span class="valor">4 650</span>
+          <span class="que">comensales de prueba</span>
+          <span class="como">46 días de un restaurante con 100 comensales diarios, ejecutados contra el código real.</span>
+        </div>
+      </div>
+
+      <p class="fuentes">
+        <strong>De dónde salen los datos de conservación:</strong>
+        FoodKeeper del <strong>USDA FSIS</strong> · fichas de poscosecha de
+        <strong>UC Davis</strong> · <em>Agriculture Handbook 66</em> del USDA ·
+        <strong>FDA Food Code</strong> · y la norma sanitaria peruana de
+        <strong>DIGESA</strong> (RM N.º 363-2005/MINSA), que manda cuando es más
+        estricta que la referencia estadounidense.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================ 6. Planes ============================ -->
+  <section id="planes">
+    <div class="envoltura">
+      <div class="titular">
+        <span class="antetitulo">Planes</span>
+        <h2>Dos planes y catorce días para probar</h2>
+        <p>
+          Sin tarjeta para empezar. Si no te convence, no pagas nada y te llevas
+          tus datos en un archivo.
+        </p>
+      </div>
+
+      <div class="planes">
+        <article class="plan destacado">
+          <span class="lazo">El más pedido</span>
+          <h3>Restaurante pequeño o mediano</h3>
+          <p class="para">Un local, hasta cinco personas usándolo.</p>
+          <p class="precio"><span class="monto">S/ 9.90</span><span class="unidad">al mes</span></p>
+          <p class="anual">o <strong>S/ 105.99 al año</strong> y te ahorras S/ 12.81</p>
+          <ul>
+            <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Inventario por lotes con vencimientos</li>
+            <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Carta con costo y margen por plato</li>
+            <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Análisis de ingresos y egresos</li>
+            <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Registro de Ventas y Compras</li>
+            <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Cotizaciones</li>
+            <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> 1 local · 5 usuarios</li>
+          </ul>
+          <a class="boton primario" href="https://wa.me/51961414086?text=Hola%2C%20me%20interesa%20el%20plan%20de%20restaurante%20peque%C3%B1o%20o%20mediano%20de%20FoodSync."
+             target="_blank" rel="noopener">Empezar la prueba</a>
+        </article>
+
+        <article class="plan">
+          <h3>Restaurante grande</h3>
+          <p class="para">Varios locales y todo el personal que haga falta.</p>
+          <p class="precio"><span class="monto">S/ 55.00</span><span class="unidad">al mes</span></p>
+          <p class="anual">o <strong>S/ 600.00 al año</strong> y te ahorras S/ 60.00</p>
+          <ul>
+            <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Todo lo del plan anterior</li>
+            <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Locales y usuarios sin límite</li>
+            <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Reportes consolidados entre locales</li>
+            <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Registro estricto de recepción: lote, registro sanitario, comprobante y responsable</li>
+            <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg> Trazabilidad hacia atrás de cada lote</li>
+          </ul>
+          <a class="boton borde" href="https://wa.me/51961414086?text=Hola%2C%20me%20interesa%20el%20plan%20de%20restaurante%20grande%20de%20FoodSync."
+             target="_blank" rel="noopener">Empezar la prueba</a>
+        </article>
+      </div>
+
+      <p class="nota-planes">
+        Los precios <strong>ya incluyen IGV</strong>. Puedes cancelar cuando
+        quieras desde la app y el servicio te sigue funcionando hasta el último
+        día que pagaste. Y aunque dejes de pagar, <strong>exportar tu
+        información sigue siendo gratis y estando disponible</strong>: es tuya.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================= 7. Qué no hace ========================== -->
+  <section class="clara" id="limites">
+    <div class="envoltura">
+      <div class="titular">
+        <span class="antetitulo">Con franqueza</span>
+        <h2>Qué NO hace FoodSync</h2>
+        <p>
+          Preferimos decírtelo aquí y no que te enteres el día que lo necesites.
+        </p>
+      </div>
+
+      <div class="limites">
+        <div class="limite">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM5.6 5.6l12.8 12.8"/></svg>
+          <div>
+            <h3>No declara a la SUNAT</h3>
+            <p>
+              Prepara los números y el archivo del mes, pero no se conecta con
+              la SUNAT, no emite comprobantes electrónicos y no firma nada. Eso
+              exige certificado digital y un operador autorizado. Aquí se
+              preparan los números; declararlos es cosa tuya o de tu contador.
+            </p>
+          </div>
+        </div>
+
+        <div class="limite">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM5.6 5.6l12.8 12.8"/></svg>
+          <div>
+            <h3>No sustituye a un contador</h3>
+            <p>
+              Te da las cifras ordenadas y te avisa de lo que no cuadra, pero la
+              responsabilidad de lo que se declara sigue siendo del restaurante.
+            </p>
+          </div>
+        </div>
+
+        <div class="limite">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM5.6 5.6l12.8 12.8"/></svg>
+          <div>
+            <h3>No guarda una copia en la nube</h3>
+            <p>
+              Es la otra cara de que tus datos no salgan del celular: si
+              desinstalas la app o borras los datos del navegador,
+              <strong>se pierden</strong>. Por eso la app trae un botón de
+              respaldo y conviene usarlo de vez en cuando.
+            </p>
+          </div>
+        </div>
+
+        <div class="limite">
+          <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21a9 9 0 100-18 9 9 0 000 18zM5.6 5.6l12.8 12.8"/></svg>
+          <div>
+            <h3>No se sincroniza entre aparatos</h3>
+            <p>
+              Cada celular es independiente. Lo que registres en uno no aparece
+              en el otro: hoy se pasa con un archivo de respaldo.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== 8. Preguntas =========================== -->
+  <section id="preguntas">
+    <div class="envoltura">
+      <div class="titular">
+        <span class="antetitulo">Preguntas</span>
+        <h2>Lo que más nos preguntan</h2>
+      </div>
+
+      <div class="preguntas">
+        <details>
+          <summary>¿De verdad funciona sin internet?
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="respuesta">
+            Sí. Hace falta conexión una sola vez, para instalarla. A partir de
+            ahí abre y funciona en modo avión, porque todo el programa y todos
+            tus datos están dentro del celular.
+          </div>
+        </details>
+
+        <details>
+          <summary>¿Hay que saber de computadoras?
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="respuesta">
+            No. Está hecha para usarse de pie en el almacén, con una mano y con
+            prisa. Si escribes un nombre conocido —pollo, papa, leche, limón— la
+            app completa sola su temperatura, su zona y su fecha de vencimiento.
+          </div>
+        </details>
+
+        <details>
+          <summary>¿Y si pierdo el celular?
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="respuesta">
+            Ahí está el respaldo: desde Ajustes descargas un archivo con
+            absolutamente todo —productos, lotes, carta, ventas, comprobantes y
+            los datos de tu negocio— y lo guardas en Drive o te lo mandas por
+            correo. En el celular nuevo lo restauras y sigues donde estabas.
+            Como no hay nube, esa copia depende de ti: acostúmbrate a bajarla.
+          </div>
+        </details>
+
+        <details>
+          <summary>¿Puedo dejar de pagar y llevarme mis datos?
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="respuesta">
+            Siempre. Aunque la cuenta quede bloqueada por falta de pago, exportar
+            sigue funcionando: el respaldo completo, el inventario, el historial
+            de ventas y el archivo de la SUNAT. No se borra nada y no te
+            retenemos nada, entre otras cosas porque tu registro de ventas es
+            información que la SUNAT te puede exigir a ti.
+          </div>
+        </details>
+
+        <details>
+          <summary>¿Sirve si tengo dos locales?
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="respuesta">
+            El plan de restaurante grande está pensado para eso. Ten en cuenta lo
+            que decimos más arriba: como no hay sincronización, cada local
+            registra en su propio aparato. Escríbenos y te contamos en detalle
+            cómo encaja con tu caso antes de que pagues nada.
+          </div>
+        </details>
+
+        <details>
+          <summary>¿Qué pasa cuando terminan los 14 días?
+            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary>
+          <div class="respuesta">
+            La app te avisa antes, a los 7, 3 y 1 día. Si no contratas, deja de
+            poder registrar cosas nuevas, pero <strong>no se borra nada</strong>
+            y puedes exportarlo todo. El día que pagues, vuelve tal como estaba.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 9. Equipo y contacto ======================== -->
+  <section class="verde" id="contacto">
+    <div class="envoltura">
+      <div class="titular">
+        <span class="antetitulo">El equipo</span>
+        <h2>Detrás de FoodSync está FAREC</h2>
+        <p>
+          Somos un equipo de Moquegua. Si algo no funciona o no sabes cómo
+          hacerlo, escríbenos: contesta una persona, no un robot.
+        </p>
+      </div>
+
+      <div class="contacto">
+        <a class="via" href="https://wa.me/51961414086?text=Hola%2C%20necesito%20ayuda%20con%20FoodSync."
+           target="_blank" rel="noopener">
+          <span class="marca"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.7-5A8.4 8.4 0 013 11.6 8.5 8.5 0 0111.6 3a8.4 8.4 0 018.4 8.5 8.5 8.5 0 01-8.5 8.5 8.4 8.4 0 01-4.3-1.2zM9 8.5c0 3 2.5 5.5 5.5 5.5M9 8.5h1.2l.9 2-1 1M14.5 14v-1.2l2-.9 1 1"/></svg></span>
+          <span>
+            <span class="que">Servicio al cliente</span>
+            <span class="dato">WhatsApp 961 414 086</span>
+          </span>
+        </a>
+
+        <a class="via" href="tel:+51961414086">
+          <span class="marca"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8.1 9.6a16 16 0 006 6l1.1-1.1a2 2 0 012.1-.5c.9.3 1.8.6 2.7.7a2 2 0 011.7 2z"/></svg></span>
+          <span>
+            <span class="que">Llámanos</span>
+            <span class="dato">961 414 086</span>
+          </span>
+        </a>
+
+        <a class="via" href="https://www.instagram.com/farec_moq" target="_blank" rel="noopener">
+          <span class="marca oro"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg></span>
+          <span>
+            <span class="que">Síguenos</span>
+            <span class="dato">@farec_moq en Instagram</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pie">
+  <div class="envoltura">
+    <div class="pie-rejilla">
+      <div>
+        <img src="iconos/logotipo.png" alt="FoodSync" width="720" height="163" style="width:170px">
+        <p class="descripcion">
+          Control de inventario, vencimientos y finanzas para restaurantes.
+          Funciona sin internet.
+        </p>
+      </div>
+
+      <div>
+        <h3>La app</h3>
+        <ul>
+          <li><a href="#funciones">Qué hace</a></li>
+          <li><a href="#descargar">Descargar la app</a></li>
+          <li><a href="#planes">Planes y precios</a></li>
+          <li><a href="#limites">Qué no hace</a></li>
+          <li><a href="#preguntas">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>Contacto</h3>
+        <ul>
+          <li><a href="https://wa.me/51961414086" target="_blank" rel="noopener">WhatsApp 961 414 086</a></li>
+          <li><a href="tel:+51961414086">Llamar al 961 414 086</a></li>
+          <li><a href="https://www.instagram.com/farec_moq" target="_blank" rel="noopener">@farec_moq</a></li>
+        </ul>
+
+        <h3 style="margin-top:22px">Legal</h3>
+        <ul>
+          <!-- Pendientes: se enlazan cuando existan los documentos de la parte 1
+               del plan (Términos, Privacidad, Cancelación, Libro de Reclamaciones). -->
+          <li><span class="marcador">Términos y Condiciones · en preparación</span></li>
+          <li><span class="marcador">Política de Privacidad · en preparación</span></li>
+          <li><span class="marcador">Libro de Reclamaciones · en preparación</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pie-fin">
+      <span>© 2026 FAREC · Moquegua, Perú</span>
+      <span>Los precios incluyen IGV</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
